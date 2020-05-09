@@ -60,4 +60,20 @@ public class AppUserDAO {
             return null;
         }
     }
+
+    private String findAvailableUserName(String userName_prefix) {
+        AppUser account = this.findAppUserByUserName(userName_prefix);
+        if (account == null) {
+            return userName_prefix;
+        }
+        int i = 0;
+        while (true) {
+            String userName = userName_prefix + "_" + i++;
+            account = this.findAppUserByUserName(userName);
+            if (account == null) {
+                return userName;
+            }
+        }
+    }
+
 }
