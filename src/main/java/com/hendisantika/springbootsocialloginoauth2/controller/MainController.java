@@ -72,4 +72,14 @@ public class MainController {
         model.addAttribute("userInfo", userInfo);
         return "adminPage";
     }
+
+    @GetMapping(value = "/userInfo")
+    public String userInfo(Model model, Principal principal) {
+        String userName = principal.getName();
+        System.out.println("User Name: " + userName);
+        UserDetails loginedUser = (UserDetails) ((Authentication) principal).getPrincipal();
+        String userInfo = WebUtils.toString(loginedUser);
+        model.addAttribute("userInfo", userInfo);
+        return "userInfoPage";
+    }
 }
