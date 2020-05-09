@@ -111,4 +111,19 @@ public class MainController {
     public String signInPage(Model model) {
         return "redirect:/login";
     }
+
+    @GetMapping(value = {"/signup"})
+    public String signupPage(WebRequest request, Model model) {
+        ProviderSignInUtils providerSignInUtils = new ProviderSignInUtils(connectionFactoryLocator,
+                connectionRepository);
+        Connection<?> connection = providerSignInUtils.getConnectionFromSession(request);
+        AppUserForm myForm = null;
+        if (connection != null) {
+            myForm = new AppUserForm(connection);
+        } else {
+            myForm = new AppUserForm();
+        }
+        model.addAttribute("myForm", myForm);
+        return "signupPage";
+    }
 }
