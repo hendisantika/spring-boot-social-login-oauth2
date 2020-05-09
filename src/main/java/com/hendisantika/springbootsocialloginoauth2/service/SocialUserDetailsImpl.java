@@ -6,6 +6,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.social.security.SocialUserDetails;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -32,4 +33,45 @@ public class SocialUserDetailsImpl implements SocialUserDetails {
             this.list.add(grant);
         }
     }
+
+    @Override
+    public String getUserId() {
+        return this.appUser.getUserId() + "";
+    }
+
+    @Override
+    public String getUsername() {
+        return appUser.getUserName();
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return list;
+    }
+
+    @Override
+    public String getPassword() {
+        return appUser.getEncrytedPassword();
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
 }
