@@ -1,10 +1,12 @@
 package com.hendisantika.springbootsocialloginoauth2.repository;
 
+import com.hendisantika.springbootsocialloginoauth2.entity.AppRole;
 import com.hendisantika.springbootsocialloginoauth2.entity.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import javax.transaction.Transactional;
 import java.util.List;
@@ -32,5 +34,18 @@ public class AppRoleDAO {
         Query query = this.entityManager.createQuery(sql, String.class);
         query.setParameter("userId", userId);
         return query.getResultList();
+    }
+
+    public AppRole findAppRoleByName(String roleName) {
+        try {
+            String sql = "Select e from " + AppRole.class.getName() + " e "
+                    + " where e.roleName = :roleName ";
+
+            Query query = this.entityManager.createQuery(sql, AppRole.class);
+            query.setParameter("roleName", roleName);
+            return (AppRole) query.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
     }
 }
