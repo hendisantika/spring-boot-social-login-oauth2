@@ -2,8 +2,11 @@ package com.hendisantika.springbootsocialloginoauth2.controller;
 
 import com.hendisantika.springbootsocialloginoauth2.form.AppUserForm;
 import com.hendisantika.springbootsocialloginoauth2.repository.AppUserDAO;
+import com.hendisantika.springbootsocialloginoauth2.util.WebUtils;
 import com.hendisantika.springbootsocialloginoauth2.validator.AppUserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.social.connect.ConnectionFactoryLocator;
 import org.springframework.social.connect.UsersConnectionRepository;
 import org.springframework.stereotype.Controller;
@@ -12,6 +15,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
+
+import java.security.Principal;
 
 /**
  * Created by IntelliJ IDEA.
@@ -58,4 +63,13 @@ public class MainController {
         return "welcomePage";
     }
 
+    @GetMapping(value = "/admin")
+    public String adminPage(Model model, Principal principal) {
+        String userName = principal.getName();
+        System.out.println("User Name: " + userName);
+        UserDetails loginedUser = (UserDetails) ((Authentication) principal).getPrincipal();
+        String userInfo = WebUtils.toString(loginedUser);
+        model.addAttribute("userInfo", userInfo);
+        return "adminPage";
+    }
 }
