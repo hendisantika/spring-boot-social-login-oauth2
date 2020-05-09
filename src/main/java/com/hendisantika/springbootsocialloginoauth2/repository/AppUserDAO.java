@@ -1,12 +1,19 @@
 package com.hendisantika.springbootsocialloginoauth2.repository;
 
+import com.hendisantika.springbootsocialloginoauth2.entity.AppRole;
 import com.hendisantika.springbootsocialloginoauth2.entity.AppUser;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.social.connect.Connection;
+import org.springframework.social.connect.ConnectionKey;
+import org.springframework.social.connect.UserProfile;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by IntelliJ IDEA.
@@ -74,6 +81,38 @@ public class AppUserDAO {
                 return userName;
             }
         }
+    }
+
+    // Auto create App User Account.
+    public AppUser createAppUser(Connection<?> connection) {
+        ConnectionKey key = connection.getKey();
+        System.out.println("key= (" + key.getProviderId() + "," + key.getProviderUserId() + ")");
+        UserProfile userProfile = connection.fetchUserProfile();
+        String email = userProfile.getEmail();
+        AppUser appUser = this.findByEmail(email);
+        if (appUser != null) {
+            return appUser;
+        }
+        String userName_prefix = userProfile.getFirstName().trim().toLowerCase()
+                + "_" + userProfile.getLastName().trim().toLowerCase();
+
+        String userName = this.findAvailableUserName(userName_prefix);
+        String randomPassword = UUID.randomUUID().toString().substring(0, 5);
+        String encrytedPassword = EncrytedPasswordUtils.encrytePassword(randomPassword);
+        appUser = new AppUser();
+        appUser.setEnabled(true);
+        appUser.setEncrytedPassword("{bcrypt}" + encrytedPassword);
+        appUser.setUserName(userName);
+        appUser.setEmail(email);
+        appUser.setFirstName(userProfile.getFirstName());
+        appUser.setLastName(userProfile.getLastName());
+        this.entityManager.persist(appUser);
+        // Create default Role
+        List<String> roleNames = new ArrayList<String>();
+        roleNames.add(AppRole.ROLE_USER);
+        this.appRoleDAO.createRoleFor(appUser, roleNames);
+
+        return appUser;
     }
 
 }
