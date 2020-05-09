@@ -1,5 +1,6 @@
 package com.hendisantika.springbootsocialloginoauth2.controller;
 
+import com.hendisantika.springbootsocialloginoauth2.form.AppUserForm;
 import com.hendisantika.springbootsocialloginoauth2.repository.AppUserDAO;
 import com.hendisantika.springbootsocialloginoauth2.validator.AppUserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,8 @@ import org.springframework.social.connect.ConnectionFactoryLocator;
 import org.springframework.social.connect.UsersConnectionRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 
 /**
  * Created by IntelliJ IDEA.
@@ -32,5 +35,19 @@ public class MainController {
 
     @Autowired
     private AppUserValidator appUserValidator;
+
+    @InitBinder
+    protected void initBinder(WebDataBinder dataBinder) {
+
+        Object target = dataBinder.getTarget();
+        if (target == null) {
+            return;
+        }
+        System.out.println("Target=" + target);
+
+        if (target.getClass() == AppUserForm.class) {
+            dataBinder.setValidator(appUserValidator);
+        }
+    }
 
 }
