@@ -40,7 +40,7 @@ import javax.sql.DataSource;
 @PropertySource("classpath:social-cfg.properties")
 public class SocialConfig implements SocialConfigurer {
 
-    private final boolean autoSignUp = false;
+    private boolean autoSignUp = false;
     @Autowired
     private DataSource dataSource;
     @Autowired

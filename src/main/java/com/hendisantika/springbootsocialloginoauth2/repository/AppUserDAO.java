@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.social.connect.Connection;
 import org.springframework.social.connect.ConnectionKey;
 import org.springframework.social.connect.UserProfile;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -26,6 +27,7 @@ import java.util.UUID;
  * Date: 09/05/20
  * Time: 18.43
  */
+@Repository
 @Transactional
 public class AppUserDAO {
 
