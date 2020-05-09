@@ -8,7 +8,9 @@ import org.springframework.social.connect.ConnectionFactoryLocator;
 import org.springframework.social.connect.UsersConnectionRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 
 /**
@@ -48,6 +50,12 @@ public class MainController {
         if (target.getClass() == AppUserForm.class) {
             dataBinder.setValidator(appUserValidator);
         }
+    }
+
+    @GetMapping(value = {"/", "/welcome"})
+    public String welcomePage(Model model) {
+        model.addAttribute("message", "This is welcome page!");
+        return "welcomePage";
     }
 
 }
