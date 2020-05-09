@@ -71,19 +71,19 @@ public class MainController {
     }
 
     @GetMapping(value = {"/", "/welcome"})
-    public String welcomePage(Model model) {
+    public String welcome(Model model) {
         model.addAttribute("message", "This is welcome page!");
-        return "welcomePage";
+        return "welcome";
     }
 
     @GetMapping(value = "/admin")
-    public String adminPage(Model model, Principal principal) {
+    public String admin(Model model, Principal principal) {
         String userName = principal.getName();
         System.out.println("User Name: " + userName);
         UserDetails loginedUser = (UserDetails) ((Authentication) principal).getPrincipal();
         String userInfo = WebUtils.toString(loginedUser);
         model.addAttribute("userInfo", userInfo);
-        return "adminPage";
+        return "admin";
     }
 
     @GetMapping(value = "/userInfo")
@@ -93,7 +93,7 @@ public class MainController {
         UserDetails loginedUser = (UserDetails) ((Authentication) principal).getPrincipal();
         String userInfo = WebUtils.toString(loginedUser);
         model.addAttribute("userInfo", userInfo);
-        return "userInfoPage";
+        return "userInfo";
     }
 
     @GetMapping(value = "/403")
@@ -112,21 +112,21 @@ public class MainController {
 
         }
 
-        return "403Page";
+        return "403";
     }
 
     @GetMapping(value = {"/login"})
     public String login(Model model) {
-        return "loginPage";
+        return "login";
     }
 
     @GetMapping(value = {"/signin"})
-    public String signInPage(Model model) {
+    public String signIn(Model model) {
         return "redirect:/login";
     }
 
     @GetMapping(value = {"/signup"})
-    public String signupPage(WebRequest request, Model model) {
+    public String signup(WebRequest request, Model model) {
         ProviderSignInUtils providerSignInUtils = new ProviderSignInUtils(connectionFactoryLocator,
                 connectionRepository);
         Connection<?> connection = providerSignInUtils.getConnectionFromSession(request);
@@ -137,7 +137,7 @@ public class MainController {
             myForm = new AppUserForm();
         }
         model.addAttribute("myForm", myForm);
-        return "signupPage";
+        return "signup";
     }
 
     @PostMapping(value = {"/signup"})
@@ -149,7 +149,7 @@ public class MainController {
 
         // Validation error.
         if (result.hasErrors()) {
-            return "signupPage";
+            return "signup";
         }
 
         List<String> roleNames = new ArrayList<String>();
@@ -162,7 +162,7 @@ public class MainController {
         } catch (Exception ex) {
             ex.printStackTrace();
             model.addAttribute("errorMessage", "Error " + ex.getMessage());
-            return "signupPage";
+            return "signup";
         }
 
         if (appUserForm.getSignInProvider() != null) {
