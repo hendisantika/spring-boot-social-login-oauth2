@@ -3,6 +3,7 @@ package com.hendisantika.springbootsocialloginoauth2.repository;
 import com.hendisantika.springbootsocialloginoauth2.entity.AppRole;
 import com.hendisantika.springbootsocialloginoauth2.entity.AppUser;
 import com.hendisantika.springbootsocialloginoauth2.form.AppUserForm;
+import com.hendisantika.springbootsocialloginoauth2.util.EncrytedPasswordUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.social.connect.Connection;
 import org.springframework.social.connect.ConnectionKey;
