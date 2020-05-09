@@ -2,6 +2,7 @@ package com.hendisantika.springbootsocialloginoauth2.repository;
 
 import com.hendisantika.springbootsocialloginoauth2.entity.AppRole;
 import com.hendisantika.springbootsocialloginoauth2.entity.AppUser;
+import com.hendisantika.springbootsocialloginoauth2.form.AppUserForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.social.connect.Connection;
 import org.springframework.social.connect.ConnectionKey;
@@ -110,6 +111,23 @@ public class AppUserDAO {
         // Create default Role
         List<String> roleNames = new ArrayList<String>();
         roleNames.add(AppRole.ROLE_USER);
+        this.appRoleDAO.createRoleFor(appUser, roleNames);
+
+        return appUser;
+    }
+
+    public AppUser registerNewUserAccount(AppUserForm appUserForm, List<String> roleNames) {
+        AppUser appUser = new AppUser();
+        appUser.setUserName(appUserForm.getUserName());
+        appUser.setEmail(appUserForm.getEmail());
+        appUser.setFirstName(appUserForm.getFirstName());
+        appUser.setLastName(appUserForm.getLastName());
+        appUser.setEnabled(true);
+        String encrytedPassword = EncrytedPasswordUtils.encrytePassword(appUserForm.getPassword());
+        appUser.setEncrytedPassword("{bcrypt}" + encrytedPassword);
+        this.entityManager.persist(appUser);
+        this.entityManager.flush();
+
         this.appRoleDAO.createRoleFor(appUser, roleNames);
 
         return appUser;
