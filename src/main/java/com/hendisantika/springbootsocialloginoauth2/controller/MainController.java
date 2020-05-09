@@ -106,4 +106,9 @@ public class MainController {
     public String login(Model model) {
         return "loginPage";
     }
+
+    @GetMapping(value = {"/signin"})
+    public String signInPage(Model model) {
+        return "redirect:/login";
+    }
 }
