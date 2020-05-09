@@ -101,4 +101,9 @@ public class MainController {
 
         return "403Page";
     }
+
+    @GetMapping(value = {"/login"})
+    public String login(Model model) {
+        return "loginPage";
+    }
 }
