@@ -48,4 +48,16 @@ public class AppUserDAO {
             return null;
         }
     }
+
+    public AppUser findByEmail(String email) {
+        try {
+            String sql = "select e from " + AppUser.class.getName() + " e "
+                    + " where e.email = :email ";
+            Query query = entityManager.createQuery(sql, AppUser.class);
+            query.setParameter("email", email);
+            return (AppUser) query.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
 }
