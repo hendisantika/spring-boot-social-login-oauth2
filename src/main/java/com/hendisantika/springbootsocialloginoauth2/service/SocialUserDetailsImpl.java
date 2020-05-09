@@ -2,6 +2,7 @@ package com.hendisantika.springbootsocialloginoauth2.service;
 
 import com.hendisantika.springbootsocialloginoauth2.entity.AppUser;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.social.security.SocialUserDetails;
 
 import java.util.ArrayList;
@@ -20,5 +21,15 @@ public class SocialUserDetailsImpl implements SocialUserDetails {
 
     private static final long serialVersionUID = 1L;
     private final List<GrantedAuthority> list = new ArrayList<GrantedAuthority>();
-    private AppUser appUser;
+    private final AppUser appUser;
+
+    public SocialUserDetailsImpl(AppUser appUser, List<String> roleNames) {
+        this.appUser = appUser;
+
+        for (String roleName : roleNames) {
+
+            GrantedAuthority grant = new SimpleGrantedAuthority(roleName);
+            this.list.add(grant);
+        }
+    }
 }
